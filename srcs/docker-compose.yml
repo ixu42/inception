@@ -1,0 +1,61 @@
+services:
+  nginx:
+    build: requirements/nginx/.
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - front-tier
+      - back-tier
+    restart: always
+  
+  wordpress:
+    build: requirements/wordpress/.
+    depends_on:
+      - mariadb
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+    container_name: wordpress
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - back-tier
+    restart: always
+  
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - back-tier
+    restart: always
+  
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ixu/data/db_data
+
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ixu/data/wp_data
+
+networks:
+  front-tier:
+  back-tier:
