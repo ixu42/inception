@@ -14,13 +14,11 @@ services:
       - front-tier
       - back-tier
     restart: always
-  
+
   wordpress:
     build: requirements/wordpress/.
     depends_on:
       - mariadb
-    environment:
-      WORDPRESS_DB_HOST: mariadb
     container_name: wordpress
     volumes:
       - wp_data:/var/www/html
@@ -29,7 +27,7 @@ services:
     networks:
       - back-tier
     restart: always
-  
+
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
@@ -40,7 +38,14 @@ services:
     networks:
       - back-tier
     restart: always
-  
+
+  redis:
+    build: requirements/bonus/redis/.
+    container_name: redis
+    networks:
+      - back-tier
+    restart: always
+
 volumes:
   db_data:
     driver: local

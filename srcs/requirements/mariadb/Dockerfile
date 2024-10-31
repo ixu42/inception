@@ -13,7 +13,6 @@ RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf && \
     chown -R mysql:mysql /var/lib/mysql && \
     chown -R mysql:mysql /run/mysqld
 
-# expose MySQL port internally for WordPress to access
 EXPOSE 3306
 
 COPY ./tools/entrypoint.sh /usr/local/bin/entrypoint.sh
