@@ -1,17 +1,18 @@
-FROM debian:11.11
+FROM alpine:3.19
 
-RUN apt update -y && \
-    apt install -y mariadb-server && \
-    apt clean && \
-    rm -fr /var/lib/apt/lists/*
+RUN apk update && \
+    apk add --no-cache mariadb mariadb-client
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
-
-RUN chmod 644 /etc/mysql/mariadb.conf.d/50-server.cnf && \
-    mkdir -p /run/mysqld && \
+RUN mkdir -p /run/mysqld && \
     mkdir -p /var/lib/mysql && \
-    chown -R mysql:mysql /var/lib/mysql && \
-    chown -R mysql:mysql /run/mysqld
+    chown -R mysql:mysql /var/lib/mysql /run/mysqld
+
+# initialize MariaDB system database and tables
+RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
+
+COPY ./conf/my-mariadb-server.cnf /etc/my.cnf.d/my-mariadb-server.cnf
+
+RUN chmod 644 /etc/my.cnf.d/my-mariadb-server.cnf
 
 EXPOSE 3306
 
@@ -19,4 +20,4 @@ COPY ./tools/entrypoint.sh /usr/local/bin/entrypoint.sh
 
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]

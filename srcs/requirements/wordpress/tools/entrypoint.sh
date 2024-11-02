@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # wait for mariadb to be ready
-sleep 2
+sleep 3
 until mysql -h mariadb -u "$DB_USER" -p"$DB_PASSWORD" -e "SHOW DATABASES;"; do
     echo "Waiting for MariaDB..."
     sleep 5
@@ -16,11 +16,12 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     echo "Configuring wp-config.php..."
     wp core config --dbname=${DB_NAME} --dbuser=${DB_USER} \
       --dbpass=${DB_PASSWORD} --dbhost=${DB_HOSTNAME} --allow-root
+
+    # Redis cache settings
     wp config set WP_REDIS_HOST 'redis' --allow-root
     wp config set WP_REDIS_PORT 6379 --raw --allow-root
     wp config set WP_CACHE true --raw --allow-root
 
-    # Redis cache settings
     echo "Installing WordPress..."
     wp core install --url=${DOMAIN_NAME} --title=${WP_TITLE} --admin_user=${WP_ADMIN} \
       --admin_password=${WP_ADMIN_PWD} --admin_email=${WP_ADMIN_EMAIL} --allow-root
@@ -36,11 +37,11 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 
     # enable object caching within WordPress
     wp redis enable --allow-root
-
 else
     echo "WordPress files already present. Skipping installation."
 fi
 
 chown -R www-data:www-data /var/www/html
 
-php-fpm7.4 -F
+echo "Starting PHP-FPM in the foreground..."
+php-fpm81 -F
