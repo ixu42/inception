@@ -66,6 +66,16 @@ services:
     networks:
       - back-tier
     restart: always
+  
+  static-website:
+    build: requirements/bonus/static-website/.
+    image: static-website
+    container_name: static-website
+    ports:
+      - "8080:80"
+    networks:
+      - back-tier
+    restart: always
 
 volumes:
   db_data:
