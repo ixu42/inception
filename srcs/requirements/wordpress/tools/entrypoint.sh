@@ -42,6 +42,7 @@ else
 fi
 
 chown -R www-data:www-data /var/www/html
+chmod -R 775 /var/www/html
 
 echo "Starting PHP-FPM in the foreground..."
 php-fpm81 -F

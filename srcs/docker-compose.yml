@@ -50,6 +50,23 @@ services:
       - back-tier
     restart: always
 
+  pure-ftpd:
+    build: requirements/bonus/pure-ftpd/.
+    image: pure-ftpd
+    container_name: pure-ftpd
+    depends_on:
+      - wordpress
+    ports:
+      - "21:21"
+      - "30000-30042:30000-30042"
+    volumes:
+      - wp_data:/home/ftpuser
+    env_file:
+      - .env
+    networks:
+      - back-tier
+    restart: always
+
 volumes:
   db_data:
     driver: local
