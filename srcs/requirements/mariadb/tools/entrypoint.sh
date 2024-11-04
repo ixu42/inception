@@ -19,7 +19,7 @@ GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;"
 
 # shut down mysqld process
-mysqladmin -u root -p"$DB_ROOT_PASSWORD" shutdown
+mysqladmin -u root shutdown
 
 echo "Starting MariaDB in regular mode..."
 exec mysqld

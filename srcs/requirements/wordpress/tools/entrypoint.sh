@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # wait for mariadb to be ready
-sleep 3
+sleep 5
 until mysql -h mariadb -u "$DB_USER" -p"$DB_PASSWORD" -e "SHOW DATABASES;"; do
     echo "Waiting for MariaDB..."
     sleep 5
