@@ -1,90 +1,90 @@
 services:
-  # nginx:
-  #   build: requirements/nginx/.
-  #   image: nginx
-  #   container_name: nginx
-  #   ports:
-  #     - "443:443"
-  #   depends_on:
-  #     - wordpress
-  #   volumes:
-  #     - wp_data:/var/www/html
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   restart: always
+  nginx:
+    build: requirements/nginx/.
+    image: nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
 
-  # wordpress:
-  #   build: requirements/wordpress/.
-  #   image: wordpress
-  #   depends_on:
-  #     - mariadb
-  #   container_name: wordpress
-  #   volumes:
-  #     - wp_data:/var/www/html
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   restart: always
+  wordpress:
+    build: requirements/wordpress/.
+    image: wordpress
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    volumes:
+      - wp_data:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
 
-  # mariadb:
-  #   build: requirements/mariadb/.
-  #   image: mariadb
-  #   container_name: mariadb
-  #   volumes:
-  #     - db_data:/var/lib/mysql
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   restart: always
+  mariadb:
+    build: requirements/mariadb/.
+    image: mariadb
+    container_name: mariadb
+    volumes:
+      - db_data:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
 
-  # redis:
-  #   build: requirements/bonus/redis/.
-  #   image: redis
-  #   container_name: redis
-  #   networks:
-  #     - inception
-  #   restart: always
+  redis:
+    build: requirements/bonus/redis/.
+    image: redis
+    container_name: redis
+    networks:
+      - inception
+    restart: always
 
-  # pure-ftpd:
-  #   build: requirements/bonus/pure-ftpd/.
-  #   image: pure-ftpd
-  #   container_name: pure-ftpd
-  #   depends_on:
-  #     - wordpress
-  #   ports:
-  #     - "21:21"
-  #     - "30000-30042:30000-30042"
-  #   volumes:
-  #     - wp_data:/home/ftpuser
-  #   env_file:
-  #     - .env
-  #   networks:
-  #     - inception
-  #   restart: always
+  pure-ftpd:
+    build: requirements/bonus/pure-ftpd/.
+    image: pure-ftpd
+    container_name: pure-ftpd
+    depends_on:
+      - wordpress
+    ports:
+      - "21:21"
+      - "30000-30042:30000-30042"
+    volumes:
+      - wp_data:/home/ftpuser
+    env_file:
+      - .env
+    networks:
+      - inception
+    restart: always
   
-  # static-website:
-  #   build: requirements/bonus/static-website/.
-  #   image: static-website
-  #   container_name: static-website
-  #   ports:
-  #     - "8080:80"
-  #   networks:
-  #     - inception
-  #   restart: always
+  static-website:
+    build: requirements/bonus/static-website/.
+    image: static-website
+    container_name: static-website
+    ports:
+      - "8080:80"
+    networks:
+      - inception
+    restart: always
 
-  # adminer:
-  #   build: requirements/bonus/adminer/.
-  #   image: adminer
-  #   container_name: adminer
-  #   ports:
-  #     - "8081:8080"
-  #   networks:
-  #     - inception
-  #   restart: always
+  adminer:
+    build: requirements/bonus/adminer/.
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - inception
+    restart: always
   
   netdata:
     build: requirements/bonus/netdata/.
@@ -96,20 +96,20 @@ services:
       - inception
     restart: always
 
-# volumes:
-#   db_data:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: /home/ixu/data/db_data
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ixu/data/db_data
 
-#   wp_data:
-#     driver: local
-#     driver_opts:
-#       type: none
-#       o: bind
-#       device: /home/ixu/data/wp_data
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/ixu/data/wp_data
 
 networks:
   inception:
