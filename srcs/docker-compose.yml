@@ -12,8 +12,7 @@ services:
     env_file:
       - .env
     networks:
-      - front-tier
-      - back-tier
+      - inception
     restart: always
 
   wordpress:
@@ -27,7 +26,7 @@ services:
     env_file:
       - .env
     networks:
-      - back-tier
+      - inception
     restart: always
 
   mariadb:
@@ -39,7 +38,7 @@ services:
     env_file:
       - .env
     networks:
-      - back-tier
+      - inception
     restart: always
 
   redis:
@@ -47,7 +46,7 @@ services:
     image: redis
     container_name: redis
     networks:
-      - back-tier
+      - inception
     restart: always
 
   pure-ftpd:
@@ -64,7 +63,7 @@ services:
     env_file:
       - .env
     networks:
-      - back-tier
+      - inception
     restart: always
   
   static-website:
@@ -74,7 +73,17 @@ services:
     ports:
       - "8080:80"
     networks:
-      - back-tier
+      - inception
+    restart: always
+
+  adminer:
+    build: requirements/bonus/adminer/.
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8081:8080"
+    networks:
+      - inception
     restart: always
 
 volumes:
@@ -93,5 +102,5 @@ volumes:
       device: /home/ixu/data/wp_data
 
 networks:
-  front-tier:
-  back-tier:
+  inception:
+    driver: bridge
