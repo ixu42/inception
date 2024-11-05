@@ -10,13 +10,17 @@ until mysqladmin ping --silent; do
     sleep 2
 done
 
-echo "Creating WordPress database and user, setting permission..."
-mysql -u root --execute \
-"DROP DATABASE IF EXISTS $DB_NAME;
-CREATE DATABASE $DB_NAME;
-CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
-GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
-FLUSH PRIVILEGES;"
+if [ ! -d "/var/lib/mysql/$DB_NAME" ]; then
+    echo "Creating WordPress database and user, setting permission..."
+    mysql -u root --execute \
+    "DROP DATABASE IF EXISTS $DB_NAME;
+    CREATE DATABASE $DB_NAME;
+    CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
+    GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
+    FLUSH PRIVILEGES;"
+else
+    echo "WordPress database already exists. Skipping WordPress database setup."
+fi
 
 # shut down mysqld process
 mysqladmin -u root shutdown

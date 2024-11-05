@@ -38,7 +38,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
     # enable object caching within WordPress
     wp redis enable --allow-root
 else
-    echo "WordPress files already present. Skipping installation."
+    echo "WordPress files already present. Skipping installation and configuration."
 fi
 
 chown -R www-data:www-data /var/www/html
